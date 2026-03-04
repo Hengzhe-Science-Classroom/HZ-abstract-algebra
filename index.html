@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Abstract Algebra — Interactive</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="app">
+        <button id="sidebar-toggle" aria-label="Toggle sidebar">&#9776;</button>
+        <aside id="sidebar">
+            <div id="sidebar-header">
+                <h1>Abstract Algebra</h1>
+                <p class="author">Dummit &amp; Foote / Artin / Lang</p>
+                <div id="progress-container">
+                    <div id="progress-bar"><div id="progress-fill"></div></div>
+                    <span id="progress-text">0%</span>
+                </div>
+            </div>
+            <div id="search-container">
+                <input type="text" id="search-input" placeholder="Search topics...">
+            </div>
+            <nav id="chapter-nav"></nav>
+            <div id="sidebar-footer"><p class="copyright-notice" style="font-size:0.7rem;color:#888;margin-top:12px;text-align:center;">&copy; 2026 Hengzhe Zhao &middot; AGPL-3.0 &amp; Commercial</p>
+                <button id="reset-progress">Reset Progress</button>
+            </div>
+        </aside>
+        <main id="main-content">
+            <div id="welcome-screen">
+                <div class="welcome-hero">
+                    <h1>Abstract Algebra</h1>
+                    <h2>Groups, Rings, Fields, and Beyond</h2>
+                    <p class="welcome-description">
+                        Explore the elegant structures of modern algebra through interactive
+                        visualizations. From groups and symmetry to Galois theory and the
+                        insolvability of the quintic, every concept comes alive on screen.
+                    </p>
+                </div>
+                <div class="roadmap">
+                    <h3>What You'll Explore</h3>
+                    <div class="roadmap-parts">
+                        <div class="roadmap-part">
+                            <h4>Part A: Group Theory</h4>
+                            <ul>
+                                <li>Ch 0: Sets, Functions, and Equivalence Relations</li>
+                                <li>Ch 1: Groups and Subgroups</li>
+                                <li>Ch 2: Cyclic Groups and Generators</li>
+                                <li>Ch 3: Permutation Groups</li>
+                                <li>Ch 4: Cosets and Lagrange's Theorem</li>
+                                <li>Ch 5: Normal Subgroups and Quotient Groups</li>
+                                <li>Ch 6: Group Homomorphisms and Isomorphism Theorems</li>
+                                <li>Ch 7: Group Actions</li>
+                                <li>Ch 8: Sylow Theorems and p-Groups</li>
+                                <li>Ch 9: Direct and Semidirect Products</li>
+                                <li>Ch 10: Classification of Finite Abelian Groups</li>
+                            </ul>
+                        </div>
+                        <div class="roadmap-part">
+                            <h4>Part B: Rings and Fields</h4>
+                            <ul>
+                                <li>Ch 11: Rings and Ideals</li>
+                                <li>Ch 12: Ring Homomorphisms and Factorization</li>
+                                <li>Ch 13: Polynomial Rings</li>
+                            </ul>
+                        </div>
+                        <div class="roadmap-part">
+                            <h4>Part C: Galois Theory</h4>
+                            <ul>
+                                <li>Ch 14: Field Extensions</li>
+                                <li>Ch 15: Splitting Fields and Algebraic Closures</li>
+                                <li>Ch 16: Galois Theory</li>
+                                <li>Ch 17: Applications of Galois Theory</li>
+                            </ul>
+                        </div>
+                        <div class="roadmap-part">
+                            <h4>Part D: Advanced Topics</h4>
+                            <ul>
+                                <li>Ch 18: Modules over Rings</li>
+                                <li>Ch 19: Categories and Functors</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <p class="welcome-start">Select a chapter from the sidebar to begin your journey into algebra!</p>
+            </div>
+            <div id="chapter-content" style="display:none;">
+                <div id="chapter-header">
+                    <div id="chapter-number-badge"></div>
+                    <h1 id="chapter-title"></h1>
+                    <p id="chapter-subtitle"></p>
+                </div>
+                <div id="section-tabs"></div>
+                <article id="section-content"></article>
+                <div id="exercises-panel" style="display:none;">
+                    <h3>Exercises</h3>
+                    <div id="exercises-list"></div>
+                </div>
+                <div id="chapter-nav-buttons">
+                    <button id="prev-btn" disabled>&larr; Previous</button>
+                    <span id="section-indicator"></span>
+                    <button id="next-btn">Next &rarr;</button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+    <script src="viz-engine.js"></script>
+
+    <!-- Chapter manifest for lazy loading -->
+    <script>
+    window.CHAPTER_MANIFEST = [
+        {number:0,  id:'ch00', title:'Sets, Functions, and Equivalence Relations',  file:'ch00-sets-functions'},
+        {number:1,  id:'ch01', title:'Groups and Subgroups',                        file:'ch01-groups-subgroups'},
+        {number:2,  id:'ch02', title:'Cyclic Groups and Generators',                file:'ch02-cyclic-groups'},
+        {number:3,  id:'ch03', title:'Permutation Groups',                          file:'ch03-permutation-groups'},
+        {number:4,  id:'ch04', title:'Cosets and Lagrange\'s Theorem',               file:'ch04-cosets-lagrange'},
+        {number:5,  id:'ch05', title:'Normal Subgroups and Quotient Groups',         file:'ch05-normal-quotient'},
+        {number:6,  id:'ch06', title:'Group Homomorphisms and Isomorphism Theorems', file:'ch06-homomorphisms'},
+        {number:7,  id:'ch07', title:'Group Actions',                               file:'ch07-group-actions'},
+        {number:8,  id:'ch08', title:'Sylow Theorems and p-Groups',                 file:'ch08-sylow-theorems'},
+        {number:9,  id:'ch09', title:'Direct and Semidirect Products',              file:'ch09-direct-semidirect'},
+        {number:10, id:'ch10', title:'Classification of Finite Abelian Groups',     file:'ch10-finite-abelian'},
+        {number:11, id:'ch11', title:'Rings and Ideals',                            file:'ch11-rings-ideals'},
+        {number:12, id:'ch12', title:'Ring Homomorphisms and Factorization',        file:'ch12-ring-homomorphisms'},
+        {number:13, id:'ch13', title:'Polynomial Rings',                            file:'ch13-polynomial-rings'},
+        {number:14, id:'ch14', title:'Field Extensions',                            file:'ch14-field-extensions'},
+        {number:15, id:'ch15', title:'Splitting Fields and Algebraic Closures',     file:'ch15-splitting-fields'},
+        {number:16, id:'ch16', title:'Galois Theory',                               file:'ch16-galois-theory'},
+        {number:17, id:'ch17', title:'Applications of Galois Theory',               file:'ch17-galois-applications'},
+        {number:18, id:'ch18', title:'Modules over Rings',                          file:'ch18-modules'},
+        {number:19, id:'ch19', title:'Categories and Functors',                     file:'ch19-categories-functors'}
+    ];
+    </script>
+
+    <script src="app.js"></script>
+</body>
+</html>
